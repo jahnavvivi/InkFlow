@@ -28,3 +28,15 @@ build/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Backend generated files
+backend/output/
+
+# Generated documents/fonts
+backend/static/pdfs/
+backend/static/presets/
+backend/static/user_fonts/
+
+# ML model checkpoints
+*.pth
+*.pt
