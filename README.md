@@ -166,6 +166,21 @@ http://localhost:5173
 
 ## Screenshots
 
+### Handwriting 1 Demo
+
+![Image1](screenshots/image1.png)
+
+### Handwriting 2 Demo
+
+![Image2](screenshots/image2.png)
+
+### Edit Preview 1
+
+![Image3](screenshots/image3.png)
+
+### Dust/Grain Functionality Preview
+
+![Image4](screenshots/image4.png)
 
 ---
 
