@@ -1,77 +1,171 @@
-# ✍️ HandFonted
+# ✍️ InkFlow
 
-**Turn your handwriting into a functional .ttf font file. Try it now on the live web application!**
+**Transform handwritten characters into a custom TrueType Font (.ttf) file using deep learning, OCR, and font-generation techniques.**
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-handfonted.xyz-brightgreen?style=for-the-badge&logo=rocket)](https://handfonted.xyz)
-
-
-HandFonted uses a deep learning pipeline to segment, classify, and vectorize handwritten characters from a single image, producing a high-quality font file with uniform stroke thickness and balanced metrics.
+InkFlow is a full-stack application that converts handwritten character samples into a usable digital font. Users upload handwriting samples through a web interface, and the backend processes the images through segmentation, classification, and font-generation pipelines to create a downloadable `.ttf` font file.
 
 ---
 
-## 🚀 How it Works
+## 🚀 Features
 
-The transformation from pixels to a font file happens in three distinct stages:
-
-### 1. Intelligent Segmentation (`character_segmentation.py`)
-* **Detection:** Utilizes **PaddleOCR (PP-OCRv5)** to locate text lines within the input image.
-* **Isolation:** Employs Connected Components Analysis (CCA) to separate individual characters.
-* **Dot Merging:** A custom geometric logic identifies and merges disconnected components, such as the dots on lowercase **'i'** and **'j'**, based on their vertical alignment and horizontal proximity.
-
-### 2. Optimized Classification (`character_classification.py`)
-* **Architecture:** Uses **ResInceptionNet**, a custom PyTorch model combining ResNet's skip connections with Inception’s multi-scale feature extraction.
-* **Global Assignment:** Unlike standard OCR that predicts characters independently, HandFonted uses the **Hungarian Algorithm** (`linear_sum_assignment`) to map segmented images to the 52 classes (A-Z, a-z). This ensures an optimal, one-to-one mapping for the entire alphabet.
-
-### 3. Font Engineering (`font_creation.py`)
-* **Stroke Normalization:** To ensure the font looks cohesive, raw character images first undergo **morphological smoothing** to remove edge anomalies and noise. They are then processed using **Skeletonization** and **Distance Transforms** to achieve a user-defined uniform stroke thickness.
-* **Vectorization:** Character outlines are extracted with sub-pixel precision, simplified using the **Ramer-Douglas-Peucker algorithm** (to remove wobbly edges), and converted into smooth vector glyphs. 
-* **Auto-Metrics:** The system dynamically calculates **Left/Right Side Bearings (LSB/RSB)** and Advance Widths based on the character's "ink" distribution to ensure natural letter spacing.
+* Upload handwritten character samples
+* Automatic character segmentation
+* Deep learning–based character classification
+* OCR-assisted preprocessing
+* Font glyph generation
+* Export custom fonts as `.ttf` files
+* Interactive web interface
 
 ---
 
-## 🛠️ Installation
+## 🏗️ Backend Pipeline
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/reshamgaire/HandFonted.git
-   cd HandFonted
-   ```
+### 1. Character Segmentation (`character_segmentation.py`)
 
-2. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-   *Note: Requires PyTorch, PaddleOCR, FontTools, OpenCV, and Scikit-Image.*
+The uploaded handwriting image is processed using computer vision techniques to isolate individual handwritten characters.
 
-3. **Download Models:**
-   Make sure the pre-trained `best_ResInceptionNet_model.pth` and PaddleOCR inference models are in the `resources/` directory.
+Key functions:
+
+* Image preprocessing
+* Noise removal
+* Character extraction
+* Bounding box generation
 
 ---
 
-## 💻 Usage
+### 2. Character Classification (`character_classification.py`)
 
-Run the full pipeline via the CLI:
+Segmented characters are classified using a trained deep learning model and OCR-assisted recognition techniques.
 
-```bash
-python main.py \
-    --input-image "examples/my_handwriting.jpg" \
-    --output-path "output/my_custom_font.ttf" \
-    --font-name "Jane Doe Hand" \
-    --thickness 100
+Key functions:
+
+* Character recognition
+* Confidence scoring
+* OCR integration
+* Character mapping
+
+---
+
+### 3. Font Generation (`font_creation.py`)
+
+Recognized characters are converted into font glyphs and assembled into a TrueType Font (`.ttf`) using FontTools.
+
+Key functions:
+
+* Glyph creation
+* Character-to-glyph mapping
+* Font metadata generation
+* TTF export
+
+---
+
+## 🛠️ Tech Stack
+
+### Backend
+
+* Python
+* Flask
+* PyTorch
+* PaddleOCR
+* OpenCV
+* FontTools
+
+### Frontend
+
+* React.js
+* Vite
+* JavaScript
+* HTML5
+* CSS3
+
+---
+
+## 📂 Project Structure
+
+```text
+InkFlow/
+│
+├── backend/
+│   ├── character_classification.py
+│   ├── character_segmentation.py
+│   ├── font_creation.py
+│   ├── document_renderer.py
+│   ├── main.py
+│   ├── server.py
+│   ├── requirements.txt
+│   ├── resources/
+│   ├── templates/
+│   └── examples/
+│
+├── frontend/
+│
+├── README.md
+└── LICENSE
 ```
 
-### Arguments:
-| Argument | Description | Default |
-| :--- | :--- | :--- |
-| `--input-image` | Path to the handwriting image. | (Required) |
-| `--output-path` | Path to save the `.ttf` file. | (Required) |
-| `--thickness` | Desired stroke weight (higher is bolder). | 100 |
-| `--font-name` | The name of your font family. | "My Handwriting" |
-| `--base-font` | The template `.ttf` for metrics. | `resources/arial.ttf` |
+---
+
+## ⚙️ Installation
+
+### Clone Repository
+
+```bash
+git clone https://github.com/jahnavvivi/InkFlow.git
+cd InkFlow
+```
+
+### Backend Setup
+
+```bash
+cd backend
+pip install -r requirements.txt
+```
+
+Run the backend:
+
+```bash
+python server.py
+```
+
+### Frontend Setup
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
 ---
 
-### License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## 🔄 Workflow
+
+1. User uploads handwriting samples.
+2. Images are processed by the backend.
+3. Characters are segmented.
+4. Characters are classified.
+5. Glyphs are generated.
+6. A custom `.ttf` font file is created.
+7. User downloads the generated font.
 
 ---
+
+## 👥 Contributors
+
+* Jahnavi — Frontend Development (React + Vite)
+* Vaibhav — Backend Development, Character Segmentation, Classification, OCR Integration, and Font Generation Pipeline
+
+---
+
+## 🔮 Future Improvements
+
+* Multi-style handwriting support
+* Real-time font preview
+* Improved recognition accuracy
+* Additional language support
+* Cloud-based font storage
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
